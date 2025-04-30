@@ -24,11 +24,11 @@ jobs:
         pip install -r requirements.txt
 
     - name: Deploy to server
-      run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} <<EOF
-        cd /home/${{ secrets.SSH_USER }}/flask-app
-        git pull origin master
-        sudo systemctl restart flask-app
-        EOF
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+  run: |
+    ssh -o StrictHostKeyChecking=no -i ~/.ssh/github_actions_key ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} <<EOF
+    cd /home/${{ secrets.SSH_USER }}/flask-app
+    git pull origin master
+    sudo systemctl restart flask-app
+    EOF
+  env:
+    SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
